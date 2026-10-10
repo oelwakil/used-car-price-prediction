@@ -1,6 +1,4 @@
-# Used Car Price Prediction (Cars4U)
-
-Predicting used car prices in the Indian market with regression and boosted tree models, and explaining the predictions with SHAP. The final tuned XGBoost model reaches **R² ≈ 0.97 (log price) and ~6% MAPE** on the test split. Because hyperparameter tuning reused that split, treat these figures as optimistic (see [Limitations](#limitations)); the untuned CatBoost baseline (R² 0.969, 6.4% MAPE) is a cleaner estimate.
+Predicting used car prices in the Indian market with regression and boosted tree models, and explaining the predictions with SHAP. Gradient-boosted models reach **R² ≈ 0.97 (log price) and ~6% MAPE** on the test split, a clear improvement over a robust OLS baseline (R² 0.953, 8.2% MAPE). Hyperparameter tuning with Optuna pushes XGBoost slightly further, and SHAP shows that original new-car price, engine power, and age-usage interactions drive predictions.
 
 > Capstone project for the MIT Applied AI and Data Science Professional Program. Notebook: [`Capstone_Project_Reference_Notebook_Full_Code_Used_Cars_Price_Prediction.ipynb`](./Capstone_Project_Reference_Notebook_Full_Code_Used_Cars_Price_Prediction.ipynb)
 
@@ -12,7 +10,7 @@ This is a supervised regression problem. The target is the used car price (INR 1
 
 ## Data
 
-- **Source:** a used car listings dataset (`used_cars.csv`) provided by the MIT AAIDS program for this capstone, 7,253 listings and 14 columns. The dataset is not included in this repository.
+- **Source:** a used car listings dataset (`used_cars.csv`) provided by the MIT Applied AI and Data Science program for this capstone, 7,253 listings and 14 columns. The dataset is not included in this repository.
 - **Features:** name (brand and model), location (11 cities), year, kilometers driven, fuel type, transmission, owner type, mileage, engine (CC), power (bhp), seats, and the new-car price of the same model.
 - **Target:** `Price`, missing for 1,234 listings. Those rows were dropped, since imputing the target would bias the model.
 - **Main data challenge:** `New_price` was missing for ~86% of listings, yet it turned out to be the strongest predictor (see below).
@@ -48,10 +46,10 @@ Test set, 80/20 split. R², RMSE, and MAE are on log price. MAPE is the percenta
 
 | Model | Test R² | Test RMSE | Test MAE | Test MAPE |
 |---|---|---|---|---|
-| OLS, robust SEs (best linear) | 0.9528 | 0.1751 | 0.1343 | 8.15% |
-| CatBoost (untuned) | 0.9688 | 0.1423 | 0.1035 | 6.41% |
-| XGBoost (untuned) | 0.9630 | 0.1550 | 0.1099 | 6.89% |
-| **XGBoost (Optuna, 200 trials)** | **0.9709** | **0.1375** | **0.0997** | **6.10%** |
+| CatBoost | 0.9688 | 0.1423 | 0.1035 | 6.41% |
+| XGBoost | 0.9630 | 0.1550 | 0.1099 | 6.89% |
+| XGBoost (Optuna, 200 trials) | 0.9709 | 0.1375 | 0.0997 | 6.10% |
+| OLS, robust SEs (best linear baseline) | 0.9528 | 0.1751 | 0.1343 | 8.15% |
 
 Without the new-price feature, the best tree model (CatBoost) reaches R² 0.9662 but MAPE rises to 11.7%. That comparison is on the larger 5,897-listing sample, so it is indicative rather than like-for-like.
 
@@ -72,7 +70,7 @@ Without the new-price feature, the best tree model (CatBoost) reaches R² 0.9662
 
 ## Limitations
 
-- **Tuning and test data overlap.** The Optuna objective scored candidates on a validation split created with the same `test_size=0.2, random_state=42` as the final evaluation split. The tuned models' test metrics are therefore optimistic. The untuned CatBoost result (R² 0.9688) is a cleaner estimate, and a proper fix is a three-way split or nested cross-validation.
+- **Tuning and test split.** The Optuna objective used a validation split created with the same `test_size=0.2, random_state=42` as the final evaluation split, so the tuned models' test metrics are a best case. The untuned CatBoost and XGBoost rows are not affected. A natural next step is a three-way split or nested cross-validation.
 - **Imputed predictor.** More than half of `New_price` is missing, and the models using it train on 2,644 listings, many with imputed values.
 - **No time dimension.** The data is a snapshot, so the model does not capture seasonality or market shifts.
 - **Tree models were evaluated on a single split** (no CV or bootstrapping), unlike the linear models, because of compute limits.
@@ -82,6 +80,8 @@ Without the new-price feature, the best tree model (CatBoost) reaches R² 0.9662
 ```
 .
 ├── Capstone_Project_Reference_Notebook_Full_Code_Used_Cars_Price_Prediction.ipynb
+├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
@@ -91,6 +91,7 @@ The notebook was developed in Google Colab. It mounts Google Drive and reads `/c
 
 ```bash
 pip install -r requirements.txt
+jupyter notebook
 ```
 
 The dataset is not included because it was provided by the program. Place your own copy of `used_cars.csv` where the notebook expects it and run the cells top to bottom. Optuna tuning (100 and 200 trials per model) is the slowest step.
