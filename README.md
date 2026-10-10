@@ -1,8 +1,8 @@
 # Used Car Price Prediction (Cars4U)
 
-Predicting used car prices in the Indian market with regression models, and explaining the predictions with SHAP. The final tuned XGBoost model explains **~97% of the variance in log price** on a held-out test set, with a **mean absolute percentage error of about 6%**.
+Predicting used car prices in the Indian market with regression and boosted tree models, and explaining the predictions with SHAP. The final tuned XGBoost model reaches **R² ≈ 0.97 (log price) and ~6% MAPE** on the test split. Because hyperparameter tuning reused that split, treat these figures as optimistic (see [Limitations](#limitations)); the untuned CatBoost baseline (R² 0.969, 6.4% MAPE) is a cleaner estimate.
 
-> Capstone project. Notebook: [`Capstone_Project_Reference_Notebook_Full_Code_Used_Cars_Price_Prediction.ipynb`](./Capstone_Project_Reference_Notebook_Full_Code_Used_Cars_Price_Prediction.ipynb)
+> Capstone project for the MIT Applied AI and Data Science Professional Program. Notebook: [`Capstone_Project_Reference_Notebook_Full_Code_Used_Cars_Price_Prediction.ipynb`](./Capstone_Project_Reference_Notebook_Full_Code_Used_Cars_Price_Prediction.ipynb)
 
 ## Business problem
 
