@@ -90,8 +90,7 @@ Without the new-price feature, the best tree model (CatBoost) reaches R² 0.9662
 The notebook was developed in Google Colab. It mounts Google Drive and reads `/content/used_cars.csv`, so update the path (and remove the Drive-mount cell) to run it elsewhere.
 
 ```bash
-pip install numpy pandas matplotlib seaborn scikit-learn statsmodels xgboost lightgbm catboost optuna shap
-jupyter notebook
+pip install -r requirements.txt
 ```
 
 The dataset is not included because it was provided by the program. Place your own copy of `used_cars.csv` where the notebook expects it and run the cells top to bottom. Optuna tuning (100 and 200 trials per model) is the slowest step.
