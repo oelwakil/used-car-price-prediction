@@ -1,3 +1,5 @@
+# Used Car Price Prediction (Cars4U)
+
 Predicting used car prices in the Indian market with regression and boosted tree models, and explaining the predictions with SHAP. Gradient-boosted models reach **R² ≈ 0.97 (log price) and ~6% MAPE** on the test split, a clear improvement over a robust OLS baseline (R² 0.953, 8.2% MAPE). Hyperparameter tuning with Optuna pushes XGBoost slightly further, and SHAP shows that original new-car price, engine power, and age-usage interactions drive predictions.
 
 > Capstone project for the MIT Applied AI and Data Science Professional Program. Notebook: [`Capstone_Project_Reference_Notebook_Full_Code_Used_Cars_Price_Prediction.ipynb`](./Capstone_Project_Reference_Notebook_Full_Code_Used_Cars_Price_Prediction.ipynb)
